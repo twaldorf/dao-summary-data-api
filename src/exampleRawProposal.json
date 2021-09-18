@@ -1,0 +1,186 @@
+{
+    "ok": true,
+    "data": {
+        "id": "f3f19d40-17ff-11ec-ac84-77607720a240",
+        "snapshot_id": "QmNeyrR9dqMkdgL4PexpLNp1LiqNX252ZgdFfQX3YRuNCg",
+        "snapshot_space": "snapshot.dcl.eth",
+        "snapshot_proposal": {
+            "name": "Reimburse gas fees to DAO Committee Members",
+            "body": "> by 0xfe91c0c482e09600f2d1dbca10fd705bc6de60bc\n\n### Summary\n\nReimburse gas fees spent by DAO Committee Members when enacting transactions for the DAO.\n\n### Abstract\n\nThe DAO Committee is responsible for sending on-chain transactions in order to update Decentraland’s Smart Contracts.\n\nEverytime a votation about Catalyst, POI, Ban and Grants passes, we send two transactions to the Aragon’s DAO contract in order to enact the proposal. The first transaction creates the action on the DAO and we have to wait 24 hours before we can send a second transaction to execute it. This delay period was included for security, during that time the action can be paused by any DAO committee or SAB member.\n\nThese two transactions have significant gas costs measured in ETH. The fee is extracted from the wallet sending the transaction, the DAO Committee Member’s wallet.\n\nThere are other cases in which the members of the DAO Committee also spend gas, for example deploying vesting contracts and transferring the ownership of them to the DAO. Some polls may also require the Committee to take on-chain action which incurs in gas fees.\n\nThe addresses of the DAO Committee are:\n\n*   0xfe91C0c482E09600f2d1DBCA10FD705BC6de60bc (Yemel)\n*   0xBef99f5f55CF7cDb3a70998C57061B7e1386a9b0 (HPrivakos)\n*   0x3323B7264F7D5e8f98e6aFCcec73b6bA1116AE19 (Eric)\n\n### Motivation\n\nI’m the one who has sent more transactions in the group. To the moment I have sent 98 transactions and spent 1.033 ETH in gas fees. Here is the  [list of transactions](https://docs.google.com/spreadsheets/d/1f4QIX1oflPVd4\\_5zS8AZmkIHQA4numma6m5mWMBCdu4/edit?usp=sharing)  downloaded from  <https://fees.wtf/> . Note that I only use this address for my DAO Committee role.\n\n### Specification\n\nThis proposal is to allow the monthly reimbursement of gas fees to DAO Committee Members. The reimbursement will be calculated by the DAO Committee and the operation will be noted in the next bi-weekly report.\n\nThis might only be necessary as a temporary stop-gap measure. In an ideal scenario, DAO Committee members shouldn’t be paying gas costs nor doing manual accounting tasks. This kind of operation should be solved by automation and better infrastructure.\n\n### Vote\n\n*   **For**: Approve the recurrent reimbursement of gas fees to DAO Committee Members\n*   **Against**: Reject the reimbursement of gas fees to DAO Committee Members\n\n- Approve the recurrent reimbursement of gas fees to DAO Committee Members\n- Reject the reimbursement of gas fees to DAO Committee Members\n- Invalid question/options\n\n\n**[Vote on this proposal on the Decentraland DAO](https://governance.decentraland.org/proposal/?id=f3f19d40-17ff-11ec-ac84-77607720a240)**",
+            "choices": [
+                "Approve the recurrent reimbursement of gas fees to DAO Committee Members",
+                "Reject the reimbursement of gas fees to DAO Committee Members",
+                "Invalid question/options"
+            ],
+            "snapshot": 13245697,
+            "end": 1632519660,
+            "start": 1631914860,
+            "metadata": {
+                "network": "1",
+                "strategies": [
+                    {
+                        "name": "erc20-balance-of",
+                        "params": {
+                            "symbol": "WMANA",
+                            "address": "0xfd09cf7cfffa9932e33668311c4777cb9db3c9be",
+                            "decimals": 18
+                        }
+                    },
+                    {
+                        "name": "erc721-with-multiplier",
+                        "params": {
+                            "symbol": "LAND",
+                            "address": "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d",
+                            "multiplier": 2000
+                        }
+                    },
+                    {
+                        "name": "decentraland-estate-size",
+                        "params": {
+                            "symbol": "ESTATE",
+                            "address": "0x959e104e1a4db6317fa58f8295f586e1a978c297",
+                            "multiplier": 2000
+                        }
+                    },
+                    {
+                        "name": "multichain",
+                        "params": {
+                            "name": "multichain",
+                            "graphs": {
+                                "137": "https://api.thegraph.com/subgraphs/name/decentraland/blocks-matic-mainnet"
+                            },
+                            "symbol": "MANA",
+                            "strategies": [
+                                {
+                                    "name": "erc20-balance-of",
+                                    "params": {
+                                        "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+                                        "decimals": 18
+                                    },
+                                    "network": "1"
+                                },
+                                {
+                                    "name": "erc20-balance-of",
+                                    "params": {
+                                        "address": "0xA1c57f48F0Deb89f569dFbE6E2B7f46D33606fD4",
+                                        "decimals": 18
+                                    },
+                                    "network": "137"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "erc721-with-multiplier",
+                        "params": {
+                            "symbol": "NAMES",
+                            "address": "0x2a187453064356c898cae034eaed119e1663acb8",
+                            "multiplier": 100
+                        }
+                    },
+                    {
+                        "name": "delegation",
+                        "params": {
+                            "symbol": "VP (delegated)",
+                            "strategies": [
+                                {
+                                    "name": "erc20-balance-of",
+                                    "params": {
+                                        "symbol": "WMANA",
+                                        "address": "0xfd09cf7cfffa9932e33668311c4777cb9db3c9be",
+                                        "decimals": 18
+                                    }
+                                },
+                                {
+                                    "name": "erc721-with-multiplier",
+                                    "params": {
+                                        "symbol": "LAND",
+                                        "address": "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d",
+                                        "multiplier": 2000
+                                    }
+                                },
+                                {
+                                    "name": "decentraland-estate-size",
+                                    "params": {
+                                        "symbol": "ESTATE",
+                                        "address": "0x959e104e1a4db6317fa58f8295f586e1a978c297",
+                                        "multiplier": 2000
+                                    }
+                                },
+                                {
+                                    "name": "multichain",
+                                    "params": {
+                                        "name": "multichain",
+                                        "graphs": {
+                                            "137": "https://api.thegraph.com/subgraphs/name/decentraland/blocks-matic-mainnet"
+                                        },
+                                        "symbol": "MANA",
+                                        "strategies": [
+                                            {
+                                                "name": "erc20-balance-of",
+                                                "params": {
+                                                    "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+                                                    "decimals": 18
+                                                },
+                                                "network": "1"
+                                            },
+                                            {
+                                                "name": "erc20-balance-of",
+                                                "params": {
+                                                    "address": "0xA1c57f48F0Deb89f569dFbE6E2B7f46D33606fD4",
+                                                    "decimals": 18
+                                                },
+                                                "network": "137"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "erc721-with-multiplier",
+                                    "params": {
+                                        "symbol": "NAMES",
+                                        "address": "0x2a187453064356c898cae034eaed119e1663acb8",
+                                        "multiplier": 100
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "snapshot_signature": "0x0624bf6c6f2eac9bc331828bf0ab970d9cce06b2e958a29a74c675072a371eb64cea01e764925f76dacbdc1d34f92d70205e45a2cd107656b2eb9997d5c941e21b",
+        "snapshot_network": "1",
+        "discourse_id": 5386,
+        "discourse_topic_id": 2148,
+        "discourse_topic_slug": "dao-qmneyrr-reimburse-gas-fees-to-dao-committee-members",
+        "user": "0xfe91c0c482e09600f2d1dbca10fd705bc6de60bc",
+        "type": "poll",
+        "status": "active",
+        "title": "Reimburse gas fees to DAO Committee Members",
+        "description": "### Summary\n\nReimburse gas fees spent by DAO Committee Members when enacting transactions for the DAO.\n\n### Abstract\n\nThe DAO Committee is responsible for sending on-chain transactions in order to update Decentraland’s Smart Contracts.\n\nEverytime a votation about Catalyst, POI, Ban and Grants passes, we send two transactions to the Aragon’s DAO contract in order to enact the proposal. The first transaction creates the action on the DAO and we have to wait 24 hours before we can send a second transaction to execute it. This delay period was included for security, during that time the action can be paused by any DAO committee or SAB member.\n\nThese two transactions have significant gas costs measured in ETH. The fee is extracted from the wallet sending the transaction, the DAO Committee Member’s wallet.\n\nThere are other cases in which the members of the DAO Committee also spend gas, for example deploying vesting contracts and transferring the ownership of them to the DAO. Some polls may also require the Committee to take on-chain action which incurs in gas fees.\n\nThe addresses of the DAO Committee are:\n\n*   0xfe91C0c482E09600f2d1DBCA10FD705BC6de60bc (Yemel)\n*   0xBef99f5f55CF7cDb3a70998C57061B7e1386a9b0 (HPrivakos)\n*   0x3323B7264F7D5e8f98e6aFCcec73b6bA1116AE19 (Eric)\n\n### Motivation\n\nI’m the one who has sent more transactions in the group. To the moment I have sent 98 transactions and spent 1.033 ETH in gas fees. Here is the  [list of transactions](https://docs.google.com/spreadsheets/d/1f4QIX1oflPVd4\\_5zS8AZmkIHQA4numma6m5mWMBCdu4/edit?usp=sharing)  downloaded from  <https://fees.wtf/> . Note that I only use this address for my DAO Committee role.\n\n### Specification\n\nThis proposal is to allow the monthly reimbursement of gas fees to DAO Committee Members. The reimbursement will be calculated by the DAO Committee and the operation will be noted in the next bi-weekly report.\n\nThis might only be necessary as a temporary stop-gap measure. In an ideal scenario, DAO Committee members shouldn’t be paying gas costs nor doing manual accounting tasks. This kind of operation should be solved by automation and better infrastructure.\n\n### Vote\n\n*   **For**: Approve the recurrent reimbursement of gas fees to DAO Committee Members\n*   **Against**: Reject the reimbursement of gas fees to DAO Committee Members",
+        "configuration": {
+            "title": "Reimburse gas fees to DAO Committee Members",
+            "description": "### Summary\nReimburse gas fees spent by DAO Committee Members when enacting transactions for the DAO.\n\n### Abstract\nThe DAO Committee is responsible for sending on-chain transactions in order to update Decentraland’s Smart Contracts.\n\nEverytime a votation about Catalyst, POI, Ban and Grants passes, we send two transactions to the Aragon’s DAO contract in order to enact the proposal. The first transaction creates the action on the DAO and we have to wait 24 hours before we can send a second transaction to execute it. This delay period was included for security, during that time the action can be paused by any DAO committee or SAB member.\n\nThese two transactions have significant gas costs measured in ETH. The fee is extracted from the wallet sending the transaction, the DAO Committee Member’s wallet.\n\nThere are other cases in which the members of the DAO Committee also spend gas, for example deploying vesting contracts and transferring the ownership of them to the DAO. Some polls may also require the Committee to take on-chain action which incurs in gas fees.\n\nThe addresses of the DAO Committee are:\n\n* 0xfe91C0c482E09600f2d1DBCA10FD705BC6de60bc (Yemel)\n* 0xBef99f5f55CF7cDb3a70998C57061B7e1386a9b0 (HPrivakos)\n* 0x3323B7264F7D5e8f98e6aFCcec73b6bA1116AE19 (Eric)\n\n\n### Motivation\nI’m the one who has sent more transactions in the group. To the moment I have sent 98 transactions and spent 1.033 ETH in gas fees. Here is the  [list of transactions](https://docs.google.com/spreadsheets/d/1f4QIX1oflPVd4_5zS8AZmkIHQA4numma6m5mWMBCdu4/edit?usp=sharing)  downloaded from  [https://fees.wtf/](https://fees.wtf/) . Note that I only use this address for my DAO Committee role.\n\n\n### Specification\n\nThis proposal is to allow the monthly reimbursement of gas fees to DAO Committee Members. The reimbursement will be calculated by the DAO Committee and the operation will be noted in the next bi-weekly report.\n\nThis might only be necessary as a temporary stop-gap measure. In an ideal scenario, DAO Committee members shouldn’t be paying gas costs nor doing manual accounting tasks. This kind of operation should be solved by automation and better infrastructure.\n\n### Vote\n* **For**: Approve the recurrent reimbursement of gas fees to DAO Committee Members\n* **Against**: Reject the reimbursement of gas fees to DAO Committee Members",
+            "choices": [
+                "Approve the recurrent reimbursement of gas fees to DAO Committee Members",
+                "Reject the reimbursement of gas fees to DAO Committee Members",
+                "Invalid question/options"
+            ]
+        },
+        "enacted": false,
+        "enacted_description": null,
+        "deleted": false,
+        "start_at": "2021-09-17T21:41:00.844Z",
+        "finish_at": "2021-09-24T21:41:00.844Z",
+        "created_at": "2021-09-17T21:41:00.844Z",
+        "updated_at": "2021-09-17T21:41:00.844Z",
+        "enacted_by": null,
+        "deleted_by": null,
+        "required_to_pass": 0,
+        "passed_by": null,
+        "passed_description": null,
+        "rejected_by": null,
+        "rejected_description": null
+    }
+}

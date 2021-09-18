@@ -5,7 +5,8 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import dotenv from 'dotenv'
 import { index } from './routes'
-
+import { connect, getProposalById } from './db'
+import { votesOfProposal } from './voteSum'
 
 const app = express()
 app.use(helmet())
@@ -30,4 +31,11 @@ app.use(express.json({ type: 'application/json' }))
 
 app.use(index)
 
-module.exports = app
+//test area
+connect(app)
+  .then(v => {
+    if (v) {console.log(getProposalById('6e3408a0-d38f-11eb-976f-4b50abb26a02'))}
+  }
+)
+
+module.exports = { app }

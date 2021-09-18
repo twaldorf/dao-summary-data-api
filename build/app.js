@@ -10,6 +10,7 @@ var cors_1 = __importDefault(require("cors"));
 var express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var routes_1 = require("./routes");
+var db_1 = require("./db");
 var app = (0, express_1.default)();
 app.use((0, helmet_1.default)());
 dotenv_1.default.config();
@@ -26,4 +27,11 @@ var limiter = (0, express_rate_limit_1.default)({
 app.use(limiter);
 app.use(express_1.default.json({ type: 'application/json' }));
 app.use(routes_1.index);
-module.exports = app;
+//test area
+(0, db_1.connect)(app)
+    .then(function (v) {
+    if (v) {
+        console.log((0, db_1.getProposalById)('6e3408a0-d38f-11eb-976f-4b50abb26a02'));
+    }
+});
+module.exports = { app: app };
