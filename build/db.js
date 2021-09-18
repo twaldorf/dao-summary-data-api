@@ -71,7 +71,7 @@ function close(app) {
 exports.close = close;
 var getProposalById = function (proposalId) {
     var proposals = app.locals.database.collection('dao-proposals');
-    var proposal = proposals.find({ proposal_id: proposalId });
+    var proposal = proposals.findOne({ id: proposalId });
     return proposal;
 };
 exports.getProposalById = getProposalById;

@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc && node build/server.js"
+    "dev": "tsc && node build/app.js"
   },
   "devDependencies": {
     "@types/express-rate-limit": "^5.1.3"

@@ -1,4 +1,3 @@
-// const express = require('express')
 import express, { Router } from 'express'
 import helmet from 'helmet'
 import cors from 'cors'
@@ -6,9 +5,9 @@ import rateLimit from 'express-rate-limit'
 import dotenv from 'dotenv'
 import { index } from './routes'
 import { connect, getProposalById } from './db'
-import { votesOfProposal } from './voteSum'
+import { regenProposalSummary, votesOfProposal } from './voteSum'
 
-const app = express()
+export const app =express()
 app.use(helmet())
 dotenv.config()
 
@@ -31,11 +30,22 @@ app.use(express.json({ type: 'application/json' }))
 
 app.use(index)
 
-//test area
-connect(app)
-  .then(v => {
-    if (v) {console.log(getProposalById('6e3408a0-d38f-11eb-976f-4b50abb26a02'))}
-  }
-)
+async function testRegen():Promise<void> {
+  connect(app)
+  .then(async (v:Boolean) => {
+    if (v) {
+        console.log(await regenProposalSummary('6e3408a0-d38f-11eb-976f-4b50abb26a02', app))
+    }
+  })
+}
+
+dotenv.config()
+const port = process.env.PORT
+
+app.listen(port, () => {
+  console.log(`Serving on ${port}`)
+})
+
+testRegen()
 
 module.exports = { app }

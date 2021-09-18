@@ -40,18 +40,12 @@ exports.regenProposalSummary = exports.votesOfProposal = void 0;
 var db_1 = require("./db");
 var util_1 = require("./util");
 //get proposals from db from array of IDs (25 at a time):array of proposals
-//x clean proposals into simple proposals:array of simple proposals
-//for each proposal
-//x find the votes and collect them:add votes to proposal objects
-//x find the vp counts for each choice:add choices with vp to proposal objects
-//x find the winner of the proposal:add winning choice to proposal objects
-//insert each proposal into the summary db
 //TODO include checkout/update timeout to avoid regenerating inactive proposals
 var votesOfProposal = function (proposalId, app) { return __awaiter(void 0, void 0, void 0, function () {
     var votesOf;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, app.locals.database.collection('dao-votes').find({ proposal_id: proposalId })];
+            case 0: return [4 /*yield*/, app.locals.database.collection('dao-votes').find({ proposal_id: proposalId }).toArray()];
             case 1:
                 votesOf = _a.sent();
                 return [2 /*return*/, votesOf];
@@ -60,18 +54,19 @@ var votesOfProposal = function (proposalId, app) { return __awaiter(void 0, void
 }); };
 exports.votesOfProposal = votesOfProposal;
 var genCleanProposal = function (rawProposal, app) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, user, id, _b, choices, name, body, end, votes;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var user, id, _a, name, body, end, choices, votes;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a = rawProposal.data, user = _a.user, id = _a.id;
-                _b = rawProposal.data.snapshot_proposal, choices = _b.choices, name = _b.name, body = _b.body, end = _b.end;
+                user = rawProposal.user, id = rawProposal.id;
+                _a = rawProposal.snapshot_proposal, name = _a.name, body = _a.body, end = _a.end;
+                choices = rawProposal.configuration.choices;
                 return [4 /*yield*/, (0, exports.votesOfProposal)(id, app)];
             case 1:
-                votes = _c.sent();
+                votes = _b.sent();
                 return [2 /*return*/, {
+                        id: id,
                         info: {
-                            id: id,
                             title: name,
                             description: body,
                             author: user,
@@ -83,8 +78,8 @@ var genCleanProposal = function (rawProposal, app) { return __awaiter(void 0, vo
         }
     });
 }); };
-var regenProposalSummary = function (proposalId, votesOf, app) { return __awaiter(void 0, void 0, void 0, function () {
-    var proposalRaw, proposal, choices, choicesWithVp, winnerChoiceIndex;
+var regenProposalSummary = function (proposalId, app) { return __awaiter(void 0, void 0, void 0, function () {
+    var proposalRaw, proposal, choicesWithVp;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, (0, db_1.getProposalById)(proposalId)];
@@ -93,14 +88,16 @@ var regenProposalSummary = function (proposalId, votesOf, app) { return __awaite
                 return [4 /*yield*/, genCleanProposal(proposalRaw, app)];
             case 2:
                 proposal = _a.sent();
-                choices = proposal.info.choices;
                 choicesWithVp = (0, util_1.getChoicesWithVp)(proposal);
                 proposal.info.choiceVps = choicesWithVp;
-                winnerChoiceIndex = (0, util_1.getWinnerIndexFromChoices)(proposal.info.choiceVps);
-                app.locals.database.collection('summary').insert(proposal);
-                return [2 /*return*/];
+                // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
+                return [4 /*yield*/, app.locals.database.collection('summary').insertOne(proposal)];
+            case 3:
+                // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
+                _a.sent();
+                return [2 /*return*/, app.locals.database.collection('summary').findOne({ id: proposalId })];
         }
     });
 }); };
 exports.regenProposalSummary = regenProposalSummary;
-module.exports = { votesOfProposal: exports.votesOfProposal };
+module.exports = { votesOfProposal: exports.votesOfProposal, regenProposalSummary: exports.regenProposalSummary };

@@ -4,7 +4,6 @@ export interface ChoiceWithVp {
 }
 
 interface Info {
-    id: string,
     title: string,
     author: string,
     description: string,
@@ -15,6 +14,7 @@ interface Info {
 }
 
 export interface CleanProposal {
+    id: string
     info: Info
     votes: Array<RawVote>
 }

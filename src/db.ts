@@ -26,7 +26,7 @@ export function close(app:Application):void {
 
 export const getProposalById = (proposalId:String):Promise<RawProposal> => {
     const proposals = app.locals.database.collection('dao-proposals')
-    const proposal = proposals.find({proposal_id: proposalId})
+    const proposal = proposals.findOne({id: proposalId})
     return proposal
 }
 
