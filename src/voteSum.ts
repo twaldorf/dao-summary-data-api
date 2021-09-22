@@ -1,6 +1,6 @@
 import { Application } from "express";
 import { Collection } from "mongodb";
-import { getProposalById } from "./db";
+import { getProposalById, getProposalSummary } from "./db";
 import { RawProposal, CleanProposal } from "./types";
 import { getChoicesWithVp, getWinnerIndexFromChoices } from "./util";
 
@@ -25,20 +25,32 @@ const genCleanProposal = async (rawProposal:RawProposal, app:Application):Promis
             description: body,
             author: user,
             choices,
-            expires: new Date(end)
+            expires: new Date(end),
+            updated: new Date()
         },
         votes
     }
 }
 
-export const regenProposalSummary = async (proposalId:String, app:Application):Promise<RawProposal> => {
+// regen the proposal summary, or generate for the first time if it doesn't exist in summaryDb
+export const regenProposalSummary = async (proposalId:string, app:Application):Promise<CleanProposal> => {
+    // get raw proposal from id (from request parameters)
     const proposalRaw = await getProposalById(proposalId)
-    let proposal = await genCleanProposal(proposalRaw, app)
-    const choicesWithVp = getChoicesWithVp(proposal)
-    proposal.info.choiceVps = choicesWithVp
+
+    // gen and get a clean proposal if the raw proposal exists in the db, else null
+    let proposal = proposalRaw ? await genCleanProposal(proposalRaw, app) : null
+
+    if (proposal) {
+        const choicesWithVp = getChoicesWithVp(proposal)
+        proposal.info.choiceVps = choicesWithVp
+    } else {
+        throw('no such proposal')
+    }
+
     // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
     await app.locals.database.collection('summary').insertOne(proposal)
-    return app.locals.database.collection('summary').findOne({id: proposalId})
+    const summary = await getProposalSummary(proposalId)
+    return summary
 }
 
 module.exports = { votesOfProposal, regenProposalSummary }

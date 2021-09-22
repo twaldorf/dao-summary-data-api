@@ -26,3 +26,4 @@ var getWinnerIndexFromChoices = function (choiceVps) {
     return winnerChoice;
 };
 exports.getWinnerIndexFromChoices = getWinnerIndexFromChoices;
+//# sourceMappingURL=util.js.map

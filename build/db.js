@@ -36,8 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProposalById = exports.close = exports.connect = void 0;
+exports.getProposalSummary = exports.getProposalById = exports.close = exports.connect = void 0;
 var mongodb_1 = require("mongodb");
+var voteSum_1 = require("./voteSum");
 var client = new mongodb_1.MongoClient('mongodb://localhost:27017');
 var app;
 function connect(appObject) {
@@ -53,7 +54,7 @@ function connect(appObject) {
                     database = client.db('test');
                     appObject.locals.database = database;
                     app = appObject;
-                    return [2 /*return*/, true];
+                    return [2 /*return*/, database];
                 case 2:
                     e_1 = _a.sent();
                     console.error(e_1);
@@ -69,10 +70,46 @@ function close(app) {
     client.close();
 }
 exports.close = close;
-var getProposalById = function (proposalId) {
-    var proposals = app.locals.database.collection('dao-proposals');
-    var proposal = proposals.findOne({ id: proposalId });
-    return proposal;
-};
+var getProposalById = function (proposalId) { return __awaiter(void 0, void 0, void 0, function () {
+    var proposals, proposal;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                proposals = app.locals.database.collection("dao-proposals");
+                return [4 /*yield*/, proposals.findOne({ id: proposalId })];
+            case 1:
+                proposal = _a.sent();
+                return [2 /*return*/, proposal];
+        }
+    });
+}); };
 exports.getProposalById = getProposalById;
-module.exports = { connect: connect, close: close, getProposalById: exports.getProposalById };
+function getProposalSummary(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var proposals, proposal, regenProposal;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    proposals = app.locals.database.collection("summary");
+                    return [4 /*yield*/, proposals.findOne({ id: id })];
+                case 1:
+                    proposal = _a.sent();
+                    if (!!proposal) return [3 /*break*/, 3];
+                    return [4 /*yield*/, (0, voteSum_1.regenProposalSummary)(id, app)];
+                case 2:
+                    regenProposal = _a.sent();
+                    if (regenProposal) {
+                        return [2 /*return*/, regenProposal];
+                    }
+                    else {
+                        throw ('no raw proposal');
+                    }
+                    _a.label = 3;
+                case 3: return [2 /*return*/, proposal];
+            }
+        });
+    });
+}
+exports.getProposalSummary = getProposalSummary;
+module.exports = { connect: connect, close: close, getProposalById: exports.getProposalById, getProposalSummary: getProposalSummary };
+//# sourceMappingURL=db.js.map

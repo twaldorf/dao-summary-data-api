@@ -71,33 +71,53 @@ var genCleanProposal = function (rawProposal, app) { return __awaiter(void 0, vo
                             description: body,
                             author: user,
                             choices: choices,
-                            expires: new Date(end)
+                            expires: new Date(end),
+                            updated: new Date()
                         },
                         votes: votes
                     }];
         }
     });
 }); };
+// regen the proposal summary, or generate for the first time if it doesn't exist in summaryDb
 var regenProposalSummary = function (proposalId, app) { return __awaiter(void 0, void 0, void 0, function () {
-    var proposalRaw, proposal, choicesWithVp;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, db_1.getProposalById)(proposalId)];
+    var proposalRaw, proposal, _a, choicesWithVp, summary;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, (0, db_1.getProposalById)(proposalId)
+                // gen and get a clean proposal if the raw proposal exists in the db, else null
+            ];
             case 1:
-                proposalRaw = _a.sent();
+                proposalRaw = _b.sent();
+                if (!proposalRaw) return [3 /*break*/, 3];
                 return [4 /*yield*/, genCleanProposal(proposalRaw, app)];
             case 2:
-                proposal = _a.sent();
-                choicesWithVp = (0, util_1.getChoicesWithVp)(proposal);
-                proposal.info.choiceVps = choicesWithVp;
+                _a = _b.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                _a = null;
+                _b.label = 4;
+            case 4:
+                proposal = _a;
+                if (proposal) {
+                    choicesWithVp = (0, util_1.getChoicesWithVp)(proposal);
+                    proposal.info.choiceVps = choicesWithVp;
+                }
+                else {
+                    throw ('no such proposal');
+                }
                 // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
                 return [4 /*yield*/, app.locals.database.collection('summary').insertOne(proposal)];
-            case 3:
+            case 5:
                 // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
-                _a.sent();
-                return [2 /*return*/, app.locals.database.collection('summary').findOne({ id: proposalId })];
+                _b.sent();
+                return [4 /*yield*/, (0, db_1.getProposalSummary)(proposalId)];
+            case 6:
+                summary = _b.sent();
+                return [2 /*return*/, summary];
         }
     });
 }); };
 exports.regenProposalSummary = regenProposalSummary;
 module.exports = { votesOfProposal: exports.votesOfProposal, regenProposalSummary: exports.regenProposalSummary };
+//# sourceMappingURL=voteSum.js.map

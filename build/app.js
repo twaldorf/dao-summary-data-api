@@ -47,7 +47,6 @@ var express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var routes_1 = require("./routes");
 var db_1 = require("./db");
-var voteSum_1 = require("./voteSum");
 exports.app = (0, express_1.default)();
 exports.app.use((0, helmet_1.default)());
 dotenv_1.default.config();
@@ -63,35 +62,28 @@ var limiter = (0, express_rate_limit_1.default)({
 });
 exports.app.use(limiter);
 exports.app.use(express_1.default.json({ type: 'application/json' }));
-exports.app.use(routes_1.index);
-function testRegen() {
+function testConnect() {
     return __awaiter(this, void 0, void 0, function () {
-        var _this = this;
+        var db;
         return __generator(this, function (_a) {
-            (0, db_1.connect)(exports.app)
-                .then(function (v) { return __awaiter(_this, void 0, void 0, function () {
-                var _a, _b;
-                return __generator(this, function (_c) {
-                    switch (_c.label) {
-                        case 0:
-                            if (!v) return [3 /*break*/, 2];
-                            _b = (_a = console).log;
-                            return [4 /*yield*/, (0, voteSum_1.regenProposalSummary)('6e3408a0-d38f-11eb-976f-4b50abb26a02', exports.app)];
-                        case 1:
-                            _b.apply(_a, [_c.sent()]);
-                            _c.label = 2;
-                        case 2: return [2 /*return*/];
-                    }
-                });
-            }); });
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, db_1.connect)(exports.app)
+                    // console.log(await getProposalSummary("6e3408a0-d38f-11eb-976f-4b50abb26a02"))
+                ];
+                case 1:
+                    db = _a.sent();
+                    return [2 /*return*/];
+            }
         });
     });
 }
 dotenv_1.default.config();
 var port = process.env.PORT;
+testConnect();
+exports.app.route('/proposal/:id').get(routes_1.proposalSummary);
+exports.app.get('/', routes_1.index);
 exports.app.listen(port, function () {
     console.log("Serving on " + port);
 });
-testRegen();
 module.exports = { app: exports.app };
+//# sourceMappingURL=app.js.map

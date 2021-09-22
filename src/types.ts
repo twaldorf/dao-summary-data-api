@@ -10,10 +10,12 @@ interface Info {
     choices: Array<string>,
     choiceVps?: Array<ChoiceWithVp>,
     winner?: string | ChoiceWithVp,
-    expires: Date
+    expires: Date,
+    updated: Date
 }
 
 export interface CleanProposal {
+    _id?: string
     id: string
     info: Info
     votes: Array<RawVote>
