@@ -4,7 +4,7 @@ export const getChoicesWithVp = (proposal:CleanProposal):Array<ChoiceWithVp> => 
     const { choices } = proposal.info
     const vpByChoice = choices.map((choice:string, index:number) => {
         const votesFor = proposal.votes.filter((v:RawVote) =>  v.choice === index + 1)
-        const totalVotesFor = votesFor.reduce((p:any,c:any) => {return p + c.vp}, 0)
+        const totalVotesFor = votesFor.reduce((p:any,c:any) => {return p + c.voting_power}, 0)
         return totalVotesFor
     })
     const choicesWithVp = choices.map((choice:string, index:number):ChoiceWithVp => {

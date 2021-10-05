@@ -42,6 +42,7 @@ export const regenProposalSummary = async (proposalId:string, app:Application):P
 
     if (proposal) {
         const choicesWithVp = getChoicesWithVp(proposal)
+        console.log(choicesWithVp)
         proposal.info.choiceVps = choicesWithVp
     } else {
         throw('no such proposal')
