@@ -13,7 +13,7 @@ export const votesOfProposal = async (proposalId:String, app:Application) => {
     return votesOf
 }
 
-const genCleanProposal = async (rawProposal:RawProposal, app:Application):Promise<CleanProposal> => {
+export const genCleanProposal = async (rawProposal:RawProposal, app:Application):Promise<CleanProposal> => {
     const { user, id } = rawProposal
     const { name, body, end } = rawProposal.snapshot_proposal
     const choices = rawProposal.configuration.choices

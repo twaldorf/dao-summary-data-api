@@ -30,7 +30,7 @@ app.use(express.json({ type: 'application/json' }))
 
 async function testConnect():Promise<void> {
   const db = await connect(app)
-  // console.log(await getProposalSummary("6e3408a0-d38f-11eb-976f-4b50abb26a02"))
+  regenProposalSummary("6e3408a0-d38f-11eb-976f-4b50abb26a02", app)
 }
 
 dotenv.config()
