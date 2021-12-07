@@ -5,7 +5,7 @@ const db_1 = require("./db");
 const voteSum_1 = require("./voteSum");
 const fetch_1 = require("./fetch");
 const index = (req, res, next) => {
-    res.send({ response: "Test" });
+    res.send({ response: "Index" });
 };
 exports.index = index;
 const proposalSummary = async (req, res) => {

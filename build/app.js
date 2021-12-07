@@ -31,9 +31,8 @@ async function testConnect() {
     const db = await (0, db_1.connect)(exports.app);
     (0, voteSum_1.regenProposalSummary)("6e3408a0-d38f-11eb-976f-4b50abb26a02", exports.app);
 }
-dotenv_1.default.config();
+// testConnect()
 const port = process.env.PORT;
-testConnect();
 exports.app.route('/proposal/:id').get(routes_1.proposalSummary);
 exports.app.get('/', routes_1.index);
 exports.app.listen(port, () => {

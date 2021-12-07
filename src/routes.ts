@@ -5,7 +5,7 @@ import { regenProposalSummary, genCleanProposal } from './voteSum'
 import { getRawProposal } from './fetch'
 
 export const index = (req:Request, res:Response, next:NextFunction):void => {
-    res.send({response:"Test"})
+    res.send({response:"Index"})
 }
 
 export const proposalSummary = async (req:Request, res:Response):Promise<void> => {

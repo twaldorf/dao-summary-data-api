@@ -19,5 +19,5 @@ export const getRawProposal = async (id: String):Promise<any> => {
         console.error(e);
     });
     
-    console.log(data)
+    // console.log(data)
 }

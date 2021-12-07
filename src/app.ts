@@ -7,7 +7,7 @@ import { index, proposalSummary } from './routes'
 import { connect, getProposalById, getProposalSummary } from './db'
 import { regenProposalSummary, votesOfProposal } from './voteSum'
 
-export const app =express()
+export const app = express()
 app.use(helmet())
 dotenv.config()
 
@@ -32,16 +32,15 @@ async function testConnect():Promise<void> {
   const db = await connect(app)
   regenProposalSummary("6e3408a0-d38f-11eb-976f-4b50abb26a02", app)
 }
+// testConnect()
 
-dotenv.config()
 const port = process.env.PORT
-testConnect()
 
 app.route('/proposal/:id').get(proposalSummary)
 app.get('/', index)
 
-app.listen(port, () => {
+export const server = app.listen(port, () => {
   console.log(`Serving on ${port}`)
 })
 
-module.exports = { app }
+module.exports = { app, server }
