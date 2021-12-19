@@ -9,7 +9,7 @@ import { getChoicesWithVp, getWinnerIndexFromChoices } from "./util";
 //TODO include checkout/update timeout to avoid regenerating inactive proposals
 
 export const votesOfProposal = async (proposalId:String, app:Application) => {
-    const votesOf = await app.locals.database.collection('dao-votes').find({proposal_id: proposalId}).toArray()
+    const votesOf = await app.locals.database.collection(app.locals.votesCollectionName).find({proposal_id: proposalId}).toArray()
     return votesOf
 }
 
@@ -49,7 +49,7 @@ export const regenProposalSummary = async (proposalId:string, app:Application):P
     }
 
     // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
-    await app.locals.database.collection('summary').insertOne(proposal)
+    await app.locals.database.collection(app.locals.summariesCollectionName).insertOne(proposal)
     const summary = await getProposalSummary(proposalId)
     return summary
 }

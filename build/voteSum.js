@@ -6,7 +6,7 @@ const util_1 = require("./util");
 //get proposals from db from array of IDs (25 at a time):array of proposals
 //TODO include checkout/update timeout to avoid regenerating inactive proposals
 const votesOfProposal = async (proposalId, app) => {
-    const votesOf = await app.locals.database.collection('dao-votes').find({ proposal_id: proposalId }).toArray();
+    const votesOf = await app.locals.database.collection(app.locals.votesCollectionName).find({ proposal_id: proposalId }).toArray();
     return votesOf;
 };
 exports.votesOfProposal = votesOfProposal;
@@ -44,7 +44,7 @@ const regenProposalSummary = async (proposalId, app) => {
         throw ('no such proposal');
     }
     // const winnerChoiceIndex = getWinnerIndexFromChoices(proposal.info.choiceVps)
-    await app.locals.database.collection('summary').insertOne(proposal);
+    await app.locals.database.collection(app.locals.summariesCollectionName).insertOne(proposal);
     const summary = await (0, db_1.getProposalSummary)(proposalId);
     return summary;
 };

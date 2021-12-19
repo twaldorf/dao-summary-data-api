@@ -10,22 +10,26 @@ export const index = (req:Request, res:Response, next:NextFunction):void => {
 
 export const proposalSummary = async (req:Request, res:Response):Promise<void> => {
     const id = req.params.id
-    const proposal = await getProposalSummary(id)
-    if (proposal) {
-        const refreshedProposal = proposal.info.updated < proposal.info.expires ? await regenProposalSummary(id, req.app) : proposal
-        res.send({proposal: refreshedProposal})
-    } else {
-        try {
-            const newRawProposal = await getRawProposal(id)
-            const newClean = await genCleanProposal(newRawProposal, req.app)
-            if (newClean) {
-                const newProposal = await getProposalSummary(id)
-                res.send({proposal: newProposal})
-            } else {
-                throw('error generating new proposal')
+    try {
+        const proposal = await getProposalSummary(id)
+        if (proposal) {
+            const refreshedProposal = proposal.info.updated < proposal.info.expires ? await regenProposalSummary(id, req.app) : proposal
+            res.send({proposal: refreshedProposal})
+        } else {
+            try {
+                const newRawProposal = await getRawProposal(id)
+                const newClean = await genCleanProposal(newRawProposal, req.app)
+                if (newClean) {
+                    const newProposal = await getProposalSummary(id)
+                    res.send({proposal: newProposal})
+                } else {
+                    throw('error generating new proposal')
+                }
+            } catch (e) {
+                res.status(200).send({error: 'no such proposal'})
             }
-        } catch (e) {e}
-    }
+        }
+    } catch {}
     return
 }
 

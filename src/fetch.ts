@@ -7,17 +7,17 @@ const timeout = 'time'
 
 export const getRawProposal = async (id: String):Promise<any> => {
 
-    get(`https://governance.decentraland.org/api/proposal/${id}`, (res) => {
-        console.log('statusCode:', res.statusCode);
-        console.log('headers:', res.headers);
+    get(`https://governance.decentraland.org/api/proposals/${id}`, (res) => {
+        console.log('statusCode:', res.statusCode)
+        console.log('headers:', res.headers)
     
         res.on('data', (d) => {
             process.stdout.write(d);
-        });
+        })
     
     }).on('error', (e) => {
-        console.error(e);
-    });
+        console.error(e)
+    })
     
     // console.log(data)
 }

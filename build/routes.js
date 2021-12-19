@@ -10,27 +10,30 @@ const index = (req, res, next) => {
 exports.index = index;
 const proposalSummary = async (req, res) => {
     const id = req.params.id;
-    const proposal = await (0, db_1.getProposalSummary)(id);
-    if (proposal) {
-        const refreshedProposal = proposal.info.updated < proposal.info.expires ? await (0, voteSum_1.regenProposalSummary)(id, req.app) : proposal;
-        res.send({ proposal: refreshedProposal });
-    }
-    else {
-        try {
-            const newRawProposal = await (0, fetch_1.getRawProposal)(id);
-            const newClean = await (0, voteSum_1.genCleanProposal)(newRawProposal, req.app);
-            if (newClean) {
-                const newProposal = await (0, db_1.getProposalSummary)(id);
-                res.send({ proposal: newProposal });
+    try {
+        const proposal = await (0, db_1.getProposalSummary)(id);
+        if (proposal) {
+            const refreshedProposal = proposal.info.updated < proposal.info.expires ? await (0, voteSum_1.regenProposalSummary)(id, req.app) : proposal;
+            res.send({ proposal: refreshedProposal });
+        }
+        else {
+            try {
+                const newRawProposal = await (0, fetch_1.getRawProposal)(id);
+                const newClean = await (0, voteSum_1.genCleanProposal)(newRawProposal, req.app);
+                if (newClean) {
+                    const newProposal = await (0, db_1.getProposalSummary)(id);
+                    res.send({ proposal: newProposal });
+                }
+                else {
+                    throw ('error generating new proposal');
+                }
             }
-            else {
-                throw ('error generating new proposal');
+            catch (e) {
+                res.status(200).send({ error: 'no such proposal' });
             }
         }
-        catch (e) {
-            e;
-        }
     }
+    catch (_a) { }
     return;
 };
 exports.proposalSummary = proposalSummary;

@@ -11,6 +11,12 @@ export const app = express()
 app.use(helmet())
 dotenv.config()
 
+//TO DO move this to a reasonable location
+app.locals.dbName = process.env.DB_NAME
+app.locals.proposalsCollectionName = 'daoProposals'
+app.locals.votesCollectionName = 'daoVotes'
+app.locals.summariesCollectionName = 'daoSummaries'
+
 const origin = process.env.NODE_ENV === 'production' ? ['https://*.decentraland.org', 'https://dao-data-vis.vercel.app'] : '*'
 
 const corsOptions = {
@@ -30,9 +36,13 @@ app.use(express.json({ type: 'application/json' }))
 
 async function testConnect():Promise<void> {
   const db = await connect(app)
-  regenProposalSummary("6e3408a0-d38f-11eb-976f-4b50abb26a02", app)
+  try {
+    await regenProposalSummary("f3f19d40-17ff-11ec-ac84-77607720a240", app)
+  } catch (error) {
+    console.log(error)
+  }
 }
-// testConnect()
+testConnect()
 
 const port = process.env.PORT
 

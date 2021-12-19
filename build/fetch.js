@@ -5,7 +5,7 @@ const node_https_1 = require("node:https");
 const url = 'csjdaoisjdaoisdj';
 const timeout = 'time';
 const getRawProposal = async (id) => {
-    (0, node_https_1.get)(`https://governance.decentraland.org/api/proposal/${id}`, (res) => {
+    (0, node_https_1.get)(`https://governance.decentraland.org/api/proposals/${id}`, (res) => {
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
         res.on('data', (d) => {
